@@ -3,7 +3,7 @@ $title = "Главная страница - страница обо мне";
 $header = "Информация обо мне";
 $date = date ('Y');
 
-$content = file_get_contents("template.php");
+$content = file_get_contents("template.html");
 $strings_template = array("{{ title }}", "{{ header }}", "{{ date }}");
 $variables_program = array($title, $header, $date);
 
