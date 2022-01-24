@@ -3,4 +3,4 @@ $title = "Главная страница - страница обо мне";
 $header = "Информация обо мне";
 $date = date ('Y');
 
-include "template.php"; // Можно подключать шаблон и с расширением html? В браузере кода php не видно.
+include "template.php";
