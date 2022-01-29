@@ -19,7 +19,7 @@ if($a >= 0 && $b >= 0) {
     echo "а и б отрицательные <br><br>";
 } else {
     echo "а и б разных знаков <br><br>";
-};
+}
 
 
 
@@ -29,55 +29,39 @@ echo 'Задание 2 <br>';
 $a = rand(0, 15);
 echo "a = {$a} <br>";
 
-//Сделай через goto
 switch($a) {
     case 0:
-        echo '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 1:
-        echo '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 2:
-        echo '2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 3:
-        echo '3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 4:
-        echo '4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 5:
-        echo '5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 6:
-        echo '6, 7, 8, 9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 7:
-        echo '7, 8, 9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 8:
-        echo '8, 9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 9:
-        echo '9, 10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 10:
-        echo '10, 11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 11:
-        echo '11, 12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 12:
-        echo '12, 13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 13:
-        echo '13, 14, 15';
-        break;
+        echo $a++ . ', ';
     case 14:
-        echo '14, 15';
-        break;
+        echo $a++ . ', ';
     case 15:
-        echo '15';
+        echo $a++;
         break;
     default:
         echo 'Неверное число';
@@ -93,6 +77,8 @@ function recursive($number, $max) {
     return "{$number}, " . recursive($number + 1, $max);
 };
 
+$a = rand(0, 15);
+echo "a = {$a} <br>";
 echo recursive($a, 15);
 echo '<br><br>';
 
@@ -113,7 +99,7 @@ function multiplication(int $x, int $y): int {
 };
 
 function division(int $x, int $y) {
-    return $y == 0 ? 'На ноль делить нельзя' : $x / $y;
+    return $y === 0 ? 'На ноль делить нельзя' : $x / $y;
 }
 
 echo 'Задание 3 <br>';
@@ -145,14 +131,14 @@ function mathOperation($arg1, $arg2, $operation) {
         default:
             return "Невозможно выполнить операцию - {$operation}. Введите: sum, subtraction, multiplication или division";
     }
-};
+}
 
-function mathOperationRecursive($arg1, $arg2, $operation) {
+function mathOperationDinamic($arg1, $arg2, $operation) {
     if($operation !== "sum" && $operation !== "subtraction" && $operation !== "multiplication" && $operation !== "division") {
         return "Невозможно выполнить операцию - {$operation}. Введите: sum, subtraction, multiplication или division";
     }
     return $operation($arg1, $arg2);
-};
+}
 
 $x = rand(-100, 100);
 $y = rand(-100, 100);
@@ -163,23 +149,24 @@ echo "x = {$x} y = {$y} <br>";
 echo "Операция: {$operation} <br>";
 echo 'Результат: ' . mathOperation($x, $y, $operation) . '<br><br>';
 
-echo 'Задание 4. Функция через рекурсию. Введите возможную операцию: sum, subtraction, multiplication или division <br>';
+echo 'Задание 4. Функция через динамическое имя функции. Введите возможную операцию: sum, subtraction, multiplication или division <br>';
 echo "x = {$x} y = {$y} <br>";
 echo "Операция: {$operation} <br>";
-echo 'Результат: ' . mathOperationRecursive($x, $y, $operation) . '<br><br>';
+echo 'Результат: ' . mathOperationDinamic($x, $y, $operation) . '<br><br>';
 
 
 
 //6. *С помощью рекурсии организовать функцию возведения числа в степень. Формат: function power($val, $pow), где $val – заданное число, $pow – степень.
 
 function power($val, $pow) {
-    if($pow != 0 && $val != 0) {
+    if($val === 0) return 0;
+
+    if($pow != 0) {
         return $val * power($val, $pow - 1);
-    } else if($val != 0) {
+    } else {
         return 1;
     }
-    return 0;
-};
+}
 
 $x = rand(-100, 100);
 $y = rand(0, 5);
@@ -208,22 +195,44 @@ echo '<br><br>';
 9 часов минут	19 часов минут 29		минут	39 минут  49 минут  59 минут
 */
 
-function timeFormat($word, $number) {
+//Вариант 1
+// function timeFormat($word, $number) {
+//     $words = [
+//         'час' => ['час', 'часа', 'часов'],
+//         'минута' => ['минута', 'минуты', 'минут']
+//     ];
+
+//     if($number % 10 >= 2 && $number % 10 <= 4 && ($number % 100 < 11 || $number % 100 > 14)) {
+//         return $words[$word][1];
+//     };
+
+//     if($number % 10 == 1 && $number % 100 != 11) {
+//         return $words[$word][0];
+//     };
+
+//     return $words[$word][2];
+// }
+
+//Вариант 2
+function timeFormat($word, $number){
     $words = [
         'час' => ['час', 'часа', 'часов'],
         'минута' => ['минута', 'минуты', 'минут']
     ];
 
-    if($number % 10 >= 2 && $number % 10 <= 4 && ($number % 100 < 11 || $number % 100 > 14)) {
-        return $words[$word][1];
-    };
+    if($number >= 10 && $number <= 19) return $words[$word][2];
 
-    if($number % 10 == 1 && $number % 100 != 11) {
-        return $words[$word][0];
-    };
-
-    return $words[$word][2];
-};
+    switch ($number % 10) {
+        case 1:
+            return $words[$word][0];
+        case 2:
+        case 3:
+        case 4:
+            return $words[$word][1];
+        default:
+            return $words[$word][2];
+    }
+}
 
 $hour = rand(0, 24);
 $minute = rand(0, 60);
