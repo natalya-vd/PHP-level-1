@@ -154,7 +154,7 @@ echo "<br><br>";
 // for (…){ // здесь пусто}
 
 echo "Задание 7 <br>";
-for($i = 0; $i < 10; print $i++ . ', ');
+for($i = 0; $i <= 9; print $i++ . ', ');
 echo "<br><br>";
 
 

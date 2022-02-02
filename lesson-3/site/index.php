@@ -11,15 +11,15 @@ $menuList = [
         'title' => 'Главная',
     ],
     [
-        'link' => 'catalog_ssr',
+        'link' => '/?page=catalog_ssr',
         'title' => 'Каталог SSR',
     ],
     [
-        'link' => 'catalog_spa',
+        'link' => '/?page=catalog_spa',
         'title' => 'Каталог SPA',
     ],
     [
-        'link' => 'about',
+        'link' => '/?page=about',
         'title' => 'О нас',
     ],
 ];
