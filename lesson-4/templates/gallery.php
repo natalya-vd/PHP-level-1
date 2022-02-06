@@ -13,8 +13,8 @@
   <ul class="gallery-list">
     <?php foreach($galleryList as $value): ?>
     <li>
-      <a href="/public/img/gallery/big-size/<?=$value?>">
-        <img src="/public/img/gallery/small-size/<?=$value?>" alt="<?=$value?>">
+      <a href="/img/gallery/big-size/<?=$value?>">
+        <img src="/img/gallery/small-size/<?=$value?>" alt="<?=$value?>">
       </a>
     </li>
     <?php endforeach; ?>

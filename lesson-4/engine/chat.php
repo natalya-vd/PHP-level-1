@@ -4,7 +4,7 @@
  */
 $message = strip_tags($_GET['message']);
 $messageList = null;
-$file = fopen('./data/chat.txt', 'a+');
+$file = fopen(ROOT . '/data/chat.txt', 'a+');
 
 if(!empty($message)) {
     fputs($file, $message . "\r\n");
