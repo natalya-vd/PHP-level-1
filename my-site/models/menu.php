@@ -26,6 +26,10 @@ function getMenuList()
         'link' => '/chat',
         'title' => 'Чат',
       ],
+      [
+        'link' => '/calculator',
+        'title' => 'Калькулятор',
+      ],
     ]
-    ];
+  ];
 }

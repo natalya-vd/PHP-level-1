@@ -2,7 +2,7 @@
   <h1>
     Чат
   </h1>
-  <form method="GET">
+  <form action="/chat/" method="GET">
     <input type="text" name="message"/>
     <button type="submit">Отправить</button>
   </form>
