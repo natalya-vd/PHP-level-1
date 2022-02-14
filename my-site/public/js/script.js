@@ -1,5 +1,6 @@
 const URL = 'apicatalog';
-const URL_CALC = 'apiCalculator'
+const URL_CALC = 'apiCalculator';
+const URL_BASKET = 'apiBasket';
 
 const operationsKeydown = {
     'NumpadAdd': '+',
@@ -25,16 +26,25 @@ async function makeGetRequest(url) {
 }
 
 async function makePostRequest(url, data) {
-    const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-        },
-        body: JSON.stringify(data)
-    })
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(data)
+        })
 
-    return await response.json()
+        if(!response.ok) {
+            throw new Error(`HTTP ERROR! Status: ${response.status}`);
+        }
+    
+        return await response.json()
+    } catch(err) {
+        console.error(err)
+    }
+    
 }
 
 function render(dateArray) {
@@ -125,5 +135,28 @@ window.addEventListener('load', async () => {
                 submitData(e)
             }
         });
+    }
+
+    if(window.location.pathname === '/catalog_ssr' || window.location.pathname === '/one-product/') {
+        addClicks("[data-id]", async (e) => {
+            e.preventDefault()
+            const id = e.target.dataset.id;
+            const price = e.target.dataset.price;
+
+            const data = await makePostRequest(URL_BASKET, {'id': id, 'price': price, 'action': 'add'})
+
+            console.log(data)
+
+        })
+    }
+
+    if(window.location.pathname === '/basket') {
+        addClicks("[data-basket]", async (e) => {
+            const id = e.currentTarget.dataset.basket;
+
+            const data = await makePostRequest(URL_BASKET, {'id': id, 'action': 'delete'})
+
+            console.log(data)
+        })
     }
 })

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 10 2022 г., 14:30
+-- Время создания: Фев 14 2022 г., 13:20
 -- Версия сервера: 8.0.24
 -- Версия PHP: 7.4.27
 
@@ -20,6 +20,36 @@ SET time_zone = "+00:00";
 --
 -- База данных: `shop`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `basket`
+--
+
+CREATE TABLE `basket` (
+  `id` int NOT NULL,
+  `id_product` int NOT NULL,
+  `price` int NOT NULL,
+  `quantity` int NOT NULL DEFAULT '1',
+  `session_id` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Дамп данных таблицы `basket`
+--
+
+INSERT INTO `basket` (`id`, `id_product`, `price`, `quantity`, `session_id`) VALUES
+(4, 1, 200, 1, '111'),
+(5, 2, 150, 1, '111'),
+(13, 3, 180, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
+(14, 5, 800, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
+(15, 2, 150, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
+(16, 5, 800, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
+(23, 1, 200, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
+(28, 2, 150, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
+(29, 1, 200, 1, 'shbia0rkcefsdafvalert6p8kubo3586'),
+(30, 1, 200, 1, 'pogg18d3pv9rnua7t4og713l4okitjoe');
 
 -- --------------------------------------------------------
 
@@ -82,6 +112,27 @@ INSERT INTO `gallery` (`id`, `name`, `size`, `quantity_views`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int NOT NULL,
+  `session_id` text NOT NULL,
+  `phone` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Дамп данных таблицы `orders`
+--
+
+INSERT INTO `orders` (`id`, `session_id`, `phone`) VALUES
+(1, '6d07ekj8jibs0u563pfl59vsnorlbh7s', '+7 (541) 236-52-63'),
+(2, 'shbia0rkcefsdafvalert6p8kubo3586', '+7 (111) 111-11-11'),
+(3, 'pogg18d3pv9rnua7t4og713l4okitjoe', '+7 (541) 236-52-63');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `products`
 --
 
@@ -104,9 +155,35 @@ INSERT INTO `products` (`id`, `name_product`, `price`, `path`, `description`) VA
 (4, 'Кофе', 160, 'coffee.jpg', 'Она всегда давала себе хорошие советы, хоть следовала им нечасто. Порой же ругала себя так беспощадно, что глаза ее наполнялись слезами. А однажды она даже попыталась отшлепать себя по щекам за то, что схитрила, играя в одиночку партию в крокет. Эта глупышка очень любила притворяться двумя разными девочками сразу.\r\n- Но сейчас это при всем желании невозможно! - подумала бедная Алиса. - Меня и на одну-то едва-едва хватает!\r\nТут она увидела под столом маленькую стеклянную коробочку. Алиса открыла ее - внутри был пирожок, на котором коринками было красиво написано: «СЪЕШЬ МЕНЯ!»\r\n- Что ж, - сказала Алиса, - я так и сделаю. Если при этом я вырасту, я достану ключик, а если уменьшусь - пролезу под дверь. Мне бы только попасть в сад, а как - все равно!\r\nОна откусила от пирожка и с тревогой подумала:\r\n- Расту или уменьшаюсь? Расту или уменьшаюсь?'),
 (5, 'Морепродукты', 800, 'seafood.jpg', ' Все страньше и страньше! - вскричала Алиса. От изумления она совсем забыла, как нужно говорить. - Я теперь раздвигаюсь, словно подзорная труба. Прощайте, ноги!\r\n(В эту минуту она как раз взглянула на ноги и увидела, как стремительно они уносятся вниз. Еще мгновение - и они скроются из виду.)\r\n- Бедные мои ножки! Кто же вас будет теперь обувать? Кто натянет на вас чулки и башмаки? Мне же до вас теперь, мои милые, не достать. Мы будем так далеки друг от друга, что мне будет совсем не до вас... Придется вам обходиться без меня.\r\nТут она призадумалась.\r\n- Все-таки надо быть с ними поласковее, - сказала она про себя. - А то еще возьмут и пойдут не в ту сторону. Ну, ладно! На рождество буду посылать им в подарок новые ботинки.\r\nИ она принялась строить планы.');
 
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `users`
+--
+
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `login` varchar(255) NOT NULL,
+  `pass` text NOT NULL,
+  `hash` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Дамп данных таблицы `users`
+--
+
+INSERT INTO `users` (`id`, `login`, `pass`, `hash`) VALUES
+(1, 'admin', '$2y$10$wMZdLAFb4Ox4Mm6l6DctjOr.sl6lU.PHmnVUPnHJRGtkoCzLMTgpi', '172686806962096a6ed2dd51.78398545');
+
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `basket`
+--
+ALTER TABLE `basket`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `feedbacks`
@@ -121,14 +198,32 @@ ALTER TABLE `gallery`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT для сохранённых таблиц
 --
+
+--
+-- AUTO_INCREMENT для таблицы `basket`
+--
+ALTER TABLE `basket`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT для таблицы `feedbacks`
@@ -143,10 +238,22 @@ ALTER TABLE `gallery`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
+-- AUTO_INCREMENT для таблицы `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT для таблицы `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -5,7 +5,7 @@ function render($page, $params)
         'title' => $params['title'],
         $params['feedback'] = renderTemplate(MODULES_DIR . 'feedback', $params),
         'content' => renderTemplate($page, $params),
-        $params['menu'] = renderTemplate(MODULES_DIR . 'menu', ['menuList' => getMenuList()['menuList']]),
+        $params['menu'] = renderTemplate(MODULES_DIR . 'menu', ['menuList' => getMenuList($params['count'])['menuList']]),
         'header' => renderTemplate(MODULES_DIR . 'header', $params),
         'footer' => renderTemplate(MODULES_DIR . 'footer', $params),
         

@@ -1,8 +1,12 @@
 <?php
-function prepareVariables($page, $action = "", $messageList)
+function prepareVariables($page, $action = "")
 {
+  session_start();
+  $session_id = session_id();
+
   $params = [
     'date' => date ('Y'),
+    'count' => getOneResult(getCountProductsBasket(TABLE_BASKET, $session_id)),
   ];
 
   switch($page) {
@@ -49,6 +53,44 @@ function prepareVariables($page, $action = "", $messageList)
     $params['title'] = 'Каталог SPA';
     break;
 
+  case 'login':
+    $params['title'] = 'Авторизация';
+    $params['allow'] = false;
+    if(isset($_GET['logout'])) {
+      $params = array_merge($params, logout('admin'));
+    }
+    if(isset($_COOKIE["hash"]) || isset($_SESSION['login'])){
+      $hash = verifyTextInput($_COOKIE["hash"]);
+      $params = array_merge($params,  is_auth(TABLE_USERS, $hash));
+    }
+    if(isset($_POST['login'])) {
+      $login = verifyTextDb(getDb(), $_POST['login']);
+      $pass = verifyTextDb(getDb(), $_POST['pass']);
+      $save = isset($_POST['save']);
+      $result = checkAuth(TABLE_USERS, $login, $pass, $save);
+      $params = array_merge($params,  $result);
+    }
+    break;
+
+  case 'basket':
+    $params['title'] = 'Корзина';
+    $params['basket'] = getAssocResult(getProductsBasket($session_id));
+    $params['sumBasket'] = getOneResult(getSumBasket($session_id));
+    break;
+
+  case 'order':
+    if(!getAssocResult(getHashBasket(TABLE_BASKET, $session_id)) && empty($_GET)) {
+      header("Location: /order/?messageOrder=error");
+      die();
+    }
+    if($_GET['messageOrder'] === 'preparation') {
+      addOrder(TABLE_ORDERS, $session_id);
+      $session_id = session_regenerate_id();
+      header("Location: /order/?messageOrder=ok");
+      die();
+    }
+    break;
+
   case 'calculator':
     $params['title'] = 'Калькулятор';
     $params['calculator'] = initCalculator();
@@ -61,6 +103,10 @@ function prepareVariables($page, $action = "", $messageList)
     $params['title'] = 'Чат';
     $params['messages'] = getMessagesList($_GET['message']);
     break;
+
+  case 'apiBasket':
+    echo json_encode(doBasketAction($session_id), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    die();
 
   case 'apicatalog':
     echo json_encode(getProducts(TABLE_PRODUCTS), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);

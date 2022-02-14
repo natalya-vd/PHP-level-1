@@ -8,7 +8,7 @@
                     <div class="catalog-inner">
                         <h3><?=$item['name_product']?></h3>
                         <p>Цена: <?=$item['price']?></p>
-                        <button class="button" type="button">Купить</button>
+                        <button class="button" type="button" data-id="<?=$item['id']?>" data-price="<?=$item['price']?>">Купить</button>
                     </div>
                 </a>
             </li>

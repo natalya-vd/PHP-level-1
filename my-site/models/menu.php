@@ -2,7 +2,7 @@
 /**
  * Данные для меню
  */
-function getMenuList() 
+function getMenuList($count) 
 {
   return [
     'menuList' => [
@@ -18,18 +18,26 @@ function getMenuList()
         'link' => '/catalog_ssr',
         'title' => 'Каталог SSR',
       ],
+      // [
+      //   'link' => '/catalog_spa',
+      //   'title' => 'Каталог SPA',
+      // ],
+      // [
+      //   'link' => '/chat',
+      //   'title' => 'Чат',
+      // ],
+      // [
+      //   'link' => '/calculator',
+      //   'title' => 'Калькулятор',
+      // ],
       [
-        'link' => '/catalog_spa',
-        'title' => 'Каталог SPA',
+        'link' => '/login',
+        'title' => 'Авторизация'
       ],
       [
-        'link' => '/chat',
-        'title' => 'Чат',
-      ],
-      [
-        'link' => '/calculator',
-        'title' => 'Калькулятор',
-      ],
+        'link' => '/basket',
+        'title' => 'Корзина ' . "($count[count])",
+      ]
     ]
   ];
 }

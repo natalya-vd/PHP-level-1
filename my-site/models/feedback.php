@@ -10,11 +10,6 @@ function getMessageFeedback($messageText)
     return $messages[$messageText];
 }
 
-function verifyTextDb($db, $text)
-{
-  return strip_tags(htmlspecialchars(mysqli_real_escape_string($db, $text)));
-}
-
 function getAllFeedback($nameTable) 
 {
   return getAssocResult("SELECT * FROM $nameTable ORDER BY id DESC");
