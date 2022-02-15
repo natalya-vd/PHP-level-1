@@ -11,6 +11,6 @@ if ($url_array[1] == "") {
     $page = $url_array[1];
 }
 
-$params = prepareVariables($page, $action, $messageList);
+$params = prepareVariables($page, $action);
 
 echo render($page, $params);

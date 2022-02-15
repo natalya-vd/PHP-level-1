@@ -1,9 +1,18 @@
 <?php
-function prepareVariables($page, $action = "", $messageList)
+function prepareVariables($page, $action = "")
 {
+  session_start();
+  $session_id = session_id();
+
   $params = [
     'date' => date ('Y'),
+    'count' => getOneResult(getCountProductsBasket(TABLE_BASKET, $session_id)),
   ];
+
+  if(is_auth(TABLE_USERS)) {
+    $params['allow'] = true;
+    $params['login'] = get_user();
+  }
 
   switch($page) {
   case 'main':
@@ -49,6 +58,38 @@ function prepareVariables($page, $action = "", $messageList)
     $params['title'] = 'Каталог SPA';
     break;
 
+  case 'login':
+    $params['title'] = 'Авторизация';
+    if(isset($_GET['logout'])) {
+      logout();
+    }
+    if(isset($_POST['login'])) {
+      $login = verifyTextDb(getDb(), $_POST['login']);
+      $pass = verifyTextDb(getDb(), $_POST['pass']);
+      $save = isset($_POST['save']);
+      checkAuth(TABLE_USERS, $login, $pass, $save);
+    }
+    break;
+
+  case 'basket':
+    $params['title'] = 'Корзина';
+    $params['basket'] = getAssocResult(getProductsBasket($session_id));
+    $params['sumBasket'] = getOneResult(getSumBasket($session_id))['sum'];
+    break;
+
+  case 'order':
+    if(!getAssocResult(getHashBasket(TABLE_BASKET, $session_id)) && empty($_GET)) {
+      header("Location: /order/?messageOrder=error");
+      die();
+    }
+    if($_GET['messageOrder'] === 'preparation') {
+      addOrder(TABLE_ORDERS, $session_id);
+      $session_id = session_regenerate_id();
+      header("Location: /order/?messageOrder=ok");
+      die();
+    }
+    break;
+
   case 'calculator':
     $params['title'] = 'Калькулятор';
     $params['calculator'] = initCalculator();
@@ -61,6 +102,10 @@ function prepareVariables($page, $action = "", $messageList)
     $params['title'] = 'Чат';
     $params['messages'] = getMessagesList($_GET['message']);
     break;
+
+  case 'apiBasket':
+    echo json_encode(doBasketAction($session_id), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    die();
 
   case 'apicatalog':
     echo json_encode(getProducts(TABLE_PRODUCTS), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);

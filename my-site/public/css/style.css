@@ -43,6 +43,18 @@ a {
     color: white;
 }
 
+input:not([type="file"]),
+textarea {
+    padding: 8px;
+    border: 1px solid lightslategrey;
+    outline: 0;
+}
+
+input:focus,
+textarea:focus {
+    border: 1px solid #0c1824;
+}
+
 /*Хэдер*/
 .header {
     box-shadow: 0px 0px 50px rgb(41 43 51 / 10%);
@@ -154,16 +166,91 @@ a {
     margin: 0 0 50px;
 }
 
-.product-form input,
-.product-form textarea {
-    padding: 8px;
-    border: 1px solid lightslategrey;
+/*Корзина*/
+.cart__wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.cart__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 65%;
+    margin: 0;
+    padding: 11px 0 0;
+    border-top: 0.3px solid rgba(70, 163, 88, 0.5);
+    list-style: none;
+}
+.cart__empty-wrapper {
+    width: 65%;
+    padding: 11px 0 0;
+    border-top: 0.3px solid rgba(70, 163, 88, 0.5);
+}
+.cart__empty {
+    padding: 40px 0;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #fbfbfb;
+}
+.cart__purchase {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 27%;
+    padding: 11px 0 0;
+    border-top: 0.3px solid rgba(70, 163, 88, 0.5);
+}
+.cart__sum {
+    height: 100%;
+    max-height: 200px;
+    background-color: #fbfbfb;
+    border-radius: 10px;
+    padding: 20px;
+}
+.card-product {
+    display: grid;
+    grid-template-columns: 4fr 2fr 2fr 2fr 1fr;
+    gap: 30px;
+    justify-items: center;
+    align-items: center;
+    border-radius: 6px;
+    background-color: #fbfbfb;
+}
+.card-product__title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+.card-product__img {
+    width: 70px;
+    height: 70px;
+    margin: 0;
+    background-color: lightslategrey;
+}
+.card-product__heading {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 16px;
+}
+.button-delete {
+    background: transparent;
+    border: 0;
     outline: 0;
+    cursor: pointer;
 }
 
-.product-form input:focus,
-.product-form textarea:focus {
-    border: 1px solid #0c1824;
+/*Авторизация*/
+.login {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-inner {
+    margin: 0 0 30px;
 }
 
 /*Отзывы*/

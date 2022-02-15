@@ -7,7 +7,7 @@
     <img src="/img/catalog/<?=$product['path']?>" alt="<?=$product['name_product']?>" width="300" height="200">
     <p>Цена: <?=$product['price']?></p>
     <p><?=$product['description']?></p>
-    <button class="button" type="button">Купить</button>
+    <button class="button" type="button" data-id="<?=$product['id']?>" data-price="<?=$product['price']?>">Купить</button>
   </div>
   <p>
     Оставить отзыв
