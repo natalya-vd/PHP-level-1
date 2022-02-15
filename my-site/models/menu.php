@@ -36,7 +36,8 @@ function getMenuList($count)
       ],
       [
         'link' => '/basket',
-        'title' => 'Корзина ' . "($count[count])",
+        'title' => 'Корзина',
+        'count' => "$count[count]"
       ]
     ]
   ];

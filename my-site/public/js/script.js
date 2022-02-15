@@ -145,8 +145,7 @@ window.addEventListener('load', async () => {
 
             const data = await makePostRequest(URL_BASKET, {'id': id, 'price': price, 'action': 'add'})
 
-            console.log(data)
-
+            getElement('#count').innerText = `(${data.count})`;
         })
     }
 
@@ -156,7 +155,9 @@ window.addEventListener('load', async () => {
 
             const data = await makePostRequest(URL_BASKET, {'id': id, 'action': 'delete'})
 
-            console.log(data)
+            getElement(`[data-item='${id}']`).remove();
+            getElement('#count').innerText = `(${data.count})`;
+            getElement('#sum').innerText = data.sum;
         })
     }
 })

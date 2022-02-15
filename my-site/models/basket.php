@@ -7,23 +7,32 @@ function doBasketAction($session_id)
     case 'delete':
       if($session_id === getOneResult(getHashProductBasket(TABLE_BASKET, $request['id']))['session_id']) {
         executeSql(deleteProductBasket(TABLE_BASKET, $request['id']));
-        header("Location: /basket");
-        return ['status' => 'ok'];
-        die();
+
+        $countProduct = getOneResult(getCountProductsBasket(TABLE_BASKET, $session_id))['count'];
+        $sum = getOneResult(getSumBasket($session_id))['sum'];
+
+        return [
+          'count' => $countProduct,
+          'sum' => $sum
+        ];
       } else {
-        die('Нет такого товара в корзине');
+        return ['error' => 'Нет такого товара в корзине'];
       }
 
     case 'add':
       $sql = addProductBasket(TABLE_BASKET, $request['id'], $request['price'], $session_id);
       executeSql($sql);
-      header("Location: " . $_SERVER['HTTP_REFERER']);
-      return ['status' => 'ok'];
-      die();
+
+      $countProduct = getOneResult(getCountProductsBasket(TABLE_BASKET, $session_id))['count'];
+      $sum = getOneResult(getSumBasket($session_id))['sum'];
+
+      return [
+        'count' => $countProduct,
+        'sum' => $sum
+      ];
 
     default:
-    return ['status' => 'error'];
-    die();
+    return ['error' => 'Нет такого товара в корзине'];
   }
 
   return ['status' => 'ok'];

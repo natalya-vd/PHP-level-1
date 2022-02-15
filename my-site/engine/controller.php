@@ -9,6 +9,11 @@ function prepareVariables($page, $action = "")
     'count' => getOneResult(getCountProductsBasket(TABLE_BASKET, $session_id)),
   ];
 
+  if(is_auth(TABLE_USERS)) {
+    $params['allow'] = true;
+    $params['login'] = get_user();
+  }
+
   switch($page) {
   case 'main':
     $params['title'] = 'Главная';
@@ -55,27 +60,21 @@ function prepareVariables($page, $action = "")
 
   case 'login':
     $params['title'] = 'Авторизация';
-    $params['allow'] = false;
     if(isset($_GET['logout'])) {
-      $params = array_merge($params, logout('admin'));
-    }
-    if(isset($_COOKIE["hash"]) || isset($_SESSION['login'])){
-      $hash = verifyTextInput($_COOKIE["hash"]);
-      $params = array_merge($params,  is_auth(TABLE_USERS, $hash));
+      logout();
     }
     if(isset($_POST['login'])) {
       $login = verifyTextDb(getDb(), $_POST['login']);
       $pass = verifyTextDb(getDb(), $_POST['pass']);
       $save = isset($_POST['save']);
-      $result = checkAuth(TABLE_USERS, $login, $pass, $save);
-      $params = array_merge($params,  $result);
+      checkAuth(TABLE_USERS, $login, $pass, $save);
     }
     break;
 
   case 'basket':
     $params['title'] = 'Корзина';
     $params['basket'] = getAssocResult(getProductsBasket($session_id));
-    $params['sumBasket'] = getOneResult(getSumBasket($session_id));
+    $params['sumBasket'] = getOneResult(getSumBasket($session_id))['sum'];
     break;
 
   case 'order':

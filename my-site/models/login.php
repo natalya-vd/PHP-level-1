@@ -14,39 +14,9 @@ function addHashForSave($nameTable, $hash, $id)
   return "UPDATE $nameTable SET `hash` = '{$hash}' WHERE $nameTable.id = {$id}";
 }
 
-function verifyHash($pass)
-{
-  return password_hash($pass, PASSWORD_DEFAULT);
-}
-
-function unVerifyHash($pass, $hash)
-{
-  return password_verify($pass, $hash);
-}
-
 function verifyTextInput($text)
 {
   return strip_tags(htmlspecialchars($text));
-}
-
-function addCookie($name, $value, $time)
-{
-  return setcookie($name, $value, time() + $time, '/');
-}
-
-function deleteCookie($name, $value, $time)
-{
-  return setcookie($name, $value, time() - $time, '/');
-}
-
-function addSession($name, $value)
-{
-  return $_SESSION[$name] = $value;
-}
-
-function deleteSession()
-{
-  return session_destroy();
 }
 
 function checkAuth($nameTable, $login, $pass, $save = false)
@@ -58,48 +28,42 @@ function checkAuth($nameTable, $login, $pass, $save = false)
       $id = verifyTextDb(getDb(), $_SESSION['id']);
       $sql = addHashForSave($nameTable, $hash, $id);
       $result = executeSql($sql);
-      addCookie("hash", $hash, 3600);
+      setcookie("hash", $hash, time() + 3600, '/');
     }
 
     header("Location: " . $_SERVER['HTTP_REFERER']);
-    return [
-      'allow' => true,
-      'login' => $login,
-    ];
     die();
+  } else {
+    die('Неверный логин или пароль');
   }
-
-  return [
-    'allow' => false,
-  ];
-  die('Неверный логин или пароль');
 }
 
 function auth($nameTable, $login, $pass)
 {
-  $sql = getUser($nameTable, $login);
-  $result = getOneResult($sql);
+  $result = getOneResult(getUser($nameTable, $login));
 
-  if (unVerifyHash($pass, $result['pass'])) {
-    addSession('login', $login);
-    addSession('id', $result['id']);
+  if (password_verify($pass, $result['pass'])) {
+    $_SESSION['login'] = $login;
+    $_SESSION['id'] = $result['id'];
     return true;
   }
   return false;
 }
 
-function is_auth($nameTable, $hash)
+function is_auth($nameTable)
 {
-  $sql = getHash($nameTable, $hash);
-  $result = getOneResult($sql);
-  $user = $result['login'];
-
-  if (!empty($user)) {
-    addSession('login', $user);
-    addSession('id', $result['id']);
-  }
-  
-  return isset($_SESSION['login']) ? checkSession($_SESSION['login']) : [];
+  if(isset($_COOKIE["hash"]) && !isset($_SESSION['login'])){
+    $hash = verifyTextInput($_COOKIE["hash"]);
+    
+    $result = getOneResult(getHash($nameTable, $hash));
+    $user = $result['login'];
+    
+    if (!empty($user)) {
+      $_SESSION['login'] = $user;
+      $_SESSION['id'] = $result['id'];
+    }
+  }  
+  return isset($_SESSION['login']);
 }
 
 function get_user()
@@ -107,30 +71,11 @@ function get_user()
   return $_SESSION['login'];
 }
 
-function checkSession($login)
+function logout()
 {
-  return [
-    'allow' => true,
-    'login' => $login,
-  ];
-}
-
-function checkCookie($login)
-{
-  return [
-    'allow' => true,
-    'login' => $login,
-  ];
-}
-
-function logout($login)
-{
-  deleteSession();
-  deleteCookie("hash", $_COOKIE["hash"], 3600);
+  session_destroy();
+  setcookie("hash", $_COOKIE["hash"], time() - 3600, '/');
   header("Location: " . $_SERVER['HTTP_REFERER']);
-  return [
-    'allow' => false,
-  ];
   die();
 }
 
