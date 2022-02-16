@@ -22,7 +22,6 @@ function verifyTextInput($text)
 function checkAuth($nameTable, $login, $pass, $save = false)
 {
   if(auth($nameTable, $login, $pass)) {
-
     if ($save) {
       $hash = uniqid(rand(), true);
       $id = verifyTextDb(getDb(), $_SESSION['id']);
@@ -79,3 +78,13 @@ function logout()
   die();
 }
 
+function checkRole($nameTable, $login)
+{
+  $role = getOneResult("SELECT role FROM $nameTable WHERE login = '{$login}'")['role'];
+
+  if($role === 'admin') {
+    return true;
+  }
+
+  return false;
+}

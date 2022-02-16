@@ -6,12 +6,22 @@ function prepareVariables($page, $action = "")
 
   $params = [
     'date' => date ('Y'),
-    'count' => getOneResult(getCountProductsBasket(TABLE_BASKET, $session_id)),
+    'count' => getOneResult(getCountProductsBasket(TABLE_BASKET, $session_id))
   ];
 
   if(is_auth(TABLE_USERS)) {
     $params['allow'] = true;
     $params['login'] = get_user();
+  }
+  
+  if(checkRole(TABLE_USERS, $_SESSION['login'])) {    
+    $params['isAdmin'] = true;
+  }
+
+  if(isset($_SESSION['id'])) {
+    $users_id = $_SESSION['id'];
+  } else {
+    $users_id = 0;
   }
 
   switch($page) {
@@ -75,6 +85,9 @@ function prepareVariables($page, $action = "")
     $params['title'] = 'Корзина';
     $params['basket'] = getAssocResult(getProductsBasket($session_id));
     $params['sumBasket'] = getOneResult(getSumBasket($session_id))['sum'];
+    if($users_id !== 0) {
+      $params['oldBaskets'] = getProductsOldBaskets($users_id);
+    }
     break;
 
   case 'order':
@@ -83,10 +96,16 @@ function prepareVariables($page, $action = "")
       die();
     }
     if($_GET['messageOrder'] === 'preparation') {
-      addOrder(TABLE_ORDERS, $session_id);
+      addOrder(TABLE_ORDERS, $session_id, $users_id);
       $session_id = session_regenerate_id();
       header("Location: /order/?messageOrder=ok");
       die();
+    }
+    break;
+
+  case 'admin':
+    if($params['isAdmin']) {
+      $params['ordersList'] = getOrders();
     }
     break;
 
@@ -104,7 +123,11 @@ function prepareVariables($page, $action = "")
     break;
 
   case 'apiBasket':
-    echo json_encode(doBasketAction($session_id), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    echo json_encode(doBasketAction($session_id, $users_id), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    die();
+
+  case 'apiAdmin':
+    echo json_encode(chengeStatusOrder(), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     die();
 
   case 'apicatalog':
