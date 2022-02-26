@@ -127,7 +127,9 @@ function prepareVariables($page, $action = "")
     die();
 
   case 'apiAdmin':
-    echo json_encode(chengeStatusOrder(), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    if($params['isAdmin']) {
+      echo json_encode(chengeStatusOrder(), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
     die();
 
   case 'apicatalog':
