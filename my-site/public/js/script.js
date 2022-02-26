@@ -1,6 +1,7 @@
 const URL = 'apicatalog';
 const URL_CALC = 'apiCalculator';
 const URL_BASKET = 'apiBasket';
+const URL_ADMIN = 'apiAdmin';
 
 const operationsKeydown = {
     'NumpadAdd': '+',
@@ -44,7 +45,6 @@ async function makePostRequest(url, data) {
     } catch(err) {
         console.error(err)
     }
-    
 }
 
 function render(dateArray) {
@@ -158,6 +158,17 @@ window.addEventListener('load', async () => {
             getElement(`[data-item='${id}']`).remove();
             getElement('#count').innerText = `(${data.count})`;
             getElement('#sum').innerText = data.sum;
+        })
+    }
+
+    if(window.location.pathname === '/admin') {
+        addClicks("[data-id]", async (e) => {
+            const id = e.currentTarget.dataset.id;
+
+            const data = await makePostRequest(URL_ADMIN, {'id': id, 'action': 'change'});
+
+            getElement(`[data-status-id='${id}']`).innerText = data.status;
+            getElement(`[data-id='${id}']`).disabled = true;
         })
     }
 })

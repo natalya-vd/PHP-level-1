@@ -27,5 +27,6 @@ require ROOT . "/models/gallery.php";
 require ROOT . "/models/login.php";
 require ROOT . "/models/basket.php";
 require ROOT . "/models/order.php";
+require ROOT . "/models/admin.php";
 require ROOT . "/models/chat.php";
 include ROOT . "/models/calculator.php";

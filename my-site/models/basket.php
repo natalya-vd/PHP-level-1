@@ -1,8 +1,8 @@
 <?php
-function doBasketAction($session_id)
+function doBasketAction($session_id, $users_id)
 {
   $request = getDataPostBasket();
-
+  
   switch($request['action']) {
     case 'delete':
       if($session_id === getOneResult(getHashProductBasket(TABLE_BASKET, $request['id']))['session_id']) {
@@ -20,7 +20,7 @@ function doBasketAction($session_id)
       }
 
     case 'add':
-      $sql = addProductBasket(TABLE_BASKET, $request['id'], $request['price'], $session_id);
+      $sql = addProductBasket(TABLE_BASKET, $request['id'], $request['price'], $session_id, $users_id);
       executeSql($sql);
 
       $countProduct = getOneResult(getCountProductsBasket(TABLE_BASKET, $session_id))['count'];
@@ -50,9 +50,9 @@ function getDataPostBasket()
   return $data;
 }
 
-function addProductBasket($nameTable, $id_product, $price, $session_id)
+function addProductBasket($nameTable, $id_product, $price, $session_id, $users_id)
 {
-  return "INSERT INTO $nameTable(id_product, price, session_id) VALUES ('{$id_product}','{$price}', '{$session_id}')";
+  return "INSERT INTO $nameTable(id_product, price, session_id, users_id) VALUES ('{$id_product}','{$price}', '{$session_id}', '{$users_id}')";
 }
 
 function deleteProductBasket($nameTable, $id_basket)
@@ -63,6 +63,24 @@ function deleteProductBasket($nameTable, $id_basket)
 function getProductsBasket($session_id)
 {
   return "SELECT basket.id, basket.id_product, basket.price, basket.quantity, basket.session_id, products.name_product, products.path FROM `basket`, `products` WHERE `session_id` = '{$session_id}' AND basket.id_product = products.id";
+}
+
+function getProductsOldBaskets($users_id)
+{
+  $ordersUser = getAssocResult("SELECT * FROM `orders` WHERE users_id = '{$users_id}' ORDER BY id DESC");  
+  
+  foreach($ordersUser as $key => $order) {
+    $productsList['productsList'] = getAssocResult("SELECT basket.price, basket.quantity, products.name_product, products.path 
+    FROM `basket` INNER JOIN `products` 
+    ON `session_id` = '{$order['session_id']}' AND basket.id_product = products.id");
+
+    $sumBasket = getOneResult(getSumBasket($order['session_id']));
+    $ordersUser[$key]['sum'] = $sumBasket['sum'];
+
+    $ordersUser[$key] = array_merge($ordersUser[$key], $productsList);
+  }
+
+  return $ordersUser;
 }
 
 function getSumBasket($session_id)

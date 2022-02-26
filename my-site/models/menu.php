@@ -38,7 +38,11 @@ function getMenuList($count)
         'link' => '/basket',
         'title' => 'Корзина',
         'count' => "$count[count]"
-      ]
+      ],
+      [
+        'link' => '/admin',
+        'title' => 'Админка'
+      ],
     ]
   ];
 }

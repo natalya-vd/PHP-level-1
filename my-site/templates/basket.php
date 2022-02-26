@@ -42,4 +42,43 @@
       <a class="button" href="/order">Оформить покупку</a>
     </div>
   </div>
+  <?php if(!empty($oldBaskets)): ?>
+    <h3>
+      Ранее оформленные заказы
+    </h3>
+  <ul>
+      <li class="admin-item admin-item-green">
+        <div></div>
+        <ul class="admin-product">
+            <li class="admin-info-product">
+              <p>Наименование товара:</p>
+              <p>Цена:</p>
+              <p>Количество:</p>
+            </li>
+          </ul>
+          <p>Сумма заказа:</p>
+          <p>Статус заказа:</p>
+        </li>
+      <?php foreach($oldBaskets as $key => $order): ?>
+        <li class="admin-item <?php $key % 2 == 0 ? print 'admin-item-gray': print 'admin-item-green'?>">
+        <div class="admin-info">
+          <p>Номер заказа: <?=$order['id']?></p>
+        </div>
+        <ul class="admin-product">
+          <?php foreach($order['productsList'] as $productsList): ?>
+          <li class="admin-info-product">
+            <p><?=$productsList['name_product']?></p>
+            <p><?=$productsList['price']?></p>
+            <p><?=$productsList['quantity']?></p>
+          </li>
+          <?php endforeach; ?>
+        </ul>
+        <p><?=$order['sum']?></p>
+        <div>
+          <p data-status-id="<?=$order['id']?>"><?=$order['status']?></p>
+        </div>
+      </li>
+      <?php endforeach; ?>    
+    </ul>
+    <?php endif; ?>
 </main>

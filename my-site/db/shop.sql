@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 14 2022 г., 13:20
+-- Время создания: Фев 17 2022 г., 01:20
 -- Версия сервера: 8.0.24
 -- Версия PHP: 7.4.27
 
@@ -32,24 +32,35 @@ CREATE TABLE `basket` (
   `id_product` int NOT NULL,
   `price` int NOT NULL,
   `quantity` int NOT NULL DEFAULT '1',
-  `session_id` text NOT NULL
+  `session_id` text NOT NULL,
+  `users_id` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `basket`
 --
 
-INSERT INTO `basket` (`id`, `id_product`, `price`, `quantity`, `session_id`) VALUES
-(4, 1, 200, 1, '111'),
-(5, 2, 150, 1, '111'),
-(13, 3, 180, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
-(14, 5, 800, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
-(15, 2, 150, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
-(16, 5, 800, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
-(23, 1, 200, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
-(28, 2, 150, 1, '6d07ekj8jibs0u563pfl59vsnorlbh7s'),
-(29, 1, 200, 1, 'shbia0rkcefsdafvalert6p8kubo3586'),
-(30, 1, 200, 1, 'pogg18d3pv9rnua7t4og713l4okitjoe');
+INSERT INTO `basket` (`id`, `id_product`, `price`, `quantity`, `session_id`, `users_id`) VALUES
+(92, 3, 180, 1, 'crgo6k26mjbrm6umsgphnih05hbma26u', 2),
+(93, 3, 180, 1, 'crgo6k26mjbrm6umsgphnih05hbma26u', 2),
+(94, 2, 150, 1, 'crgo6k26mjbrm6umsgphnih05hbma26u', 2),
+(95, 1, 200, 1, 'crgo6k26mjbrm6umsgphnih05hbma26u', 2),
+(96, 1, 200, 1, 'j4ral797thp0sk2svlbp8s1c27a31sv0', 2),
+(97, 2, 150, 1, 'j4ral797thp0sk2svlbp8s1c27a31sv0', 2),
+(98, 1, 200, 1, 'j4ral797thp0sk2svlbp8s1c27a31sv0', 2),
+(99, 3, 180, 1, 'j4ral797thp0sk2svlbp8s1c27a31sv0', 2),
+(100, 5, 800, 1, 'j4ral797thp0sk2svlbp8s1c27a31sv0', 2),
+(101, 1, 200, 1, 'r6ge1ononlspb9m8mfj5c1dm5mqshadf', 1),
+(102, 2, 150, 1, 'r6ge1ononlspb9m8mfj5c1dm5mqshadf', 1),
+(103, 2, 150, 1, '0l0r7cvfaekdqqfeesaq4uqqidav2fif', 2),
+(104, 1, 200, 1, '0l0r7cvfaekdqqfeesaq4uqqidav2fif', 2),
+(105, 2, 150, 1, '5lc1suqhhmq55peg8jjavsoal0mtcmgu', 0),
+(106, 3, 180, 1, '5lc1suqhhmq55peg8jjavsoal0mtcmgu', 0),
+(107, 2, 150, 1, '5lc1suqhhmq55peg8jjavsoal0mtcmgu', 0),
+(108, 3, 180, 1, 'ec3f5afj7iegiapl4kk4v84cnn0o8b6a', 0),
+(109, 2, 150, 1, 'ec3f5afj7iegiapl4kk4v84cnn0o8b6a', 0),
+(110, 4, 160, 1, 'ec3f5afj7iegiapl4kk4v84cnn0o8b6a', 0),
+(111, 3, 180, 1, 'pe2ieb6tbee0vj2sd9t1g01ni96srval', 2);
 
 -- --------------------------------------------------------
 
@@ -118,17 +129,24 @@ INSERT INTO `gallery` (`id`, `name`, `size`, `quantity_views`) VALUES
 CREATE TABLE `orders` (
   `id` int NOT NULL,
   `session_id` text NOT NULL,
-  `phone` varchar(255) NOT NULL
+  `phone` varchar(255) NOT NULL,
+  `name_user` varchar(255) NOT NULL,
+  `users_id` int DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Ожидает оформления'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `orders`
 --
 
-INSERT INTO `orders` (`id`, `session_id`, `phone`) VALUES
-(1, '6d07ekj8jibs0u563pfl59vsnorlbh7s', '+7 (541) 236-52-63'),
-(2, 'shbia0rkcefsdafvalert6p8kubo3586', '+7 (111) 111-11-11'),
-(3, 'pogg18d3pv9rnua7t4og713l4okitjoe', '+7 (541) 236-52-63');
+INSERT INTO `orders` (`id`, `session_id`, `phone`, `name_user`, `users_id`, `status`) VALUES
+(12, 'crgo6k26mjbrm6umsgphnih05hbma26u', '+7 (541) 236-52-63', 'user', 2, 'Ожидает оформления'),
+(13, 'j4ral797thp0sk2svlbp8s1c27a31sv0', '+7 (541) 236-52-63', 'Тест', 2, 'Заказ оформлен'),
+(14, 'r6ge1ononlspb9m8mfj5c1dm5mqshadf', '+7 (111) 111-11-11', 'admin', 1, 'Заказ оформлен'),
+(15, '0l0r7cvfaekdqqfeesaq4uqqidav2fif', '+7 (541) 236-52-63', 'user', 2, 'Ожидает оформления'),
+(16, '5lc1suqhhmq55peg8jjavsoal0mtcmgu', '+7 (541) 236-52-63', 'Тест', 0, 'Ожидает оформления'),
+(17, 'ec3f5afj7iegiapl4kk4v84cnn0o8b6a', '+7 (541) 236-52-63', 'Тест', 0, 'Заказ оформлен'),
+(18, 'pe2ieb6tbee0vj2sd9t1g01ni96srval', '+7 (541) 236-52-63', 'user', 0, 'Заказ оформлен');
 
 -- --------------------------------------------------------
 
@@ -165,15 +183,17 @@ CREATE TABLE `users` (
   `id` int NOT NULL,
   `login` varchar(255) NOT NULL,
   `pass` text NOT NULL,
-  `hash` text NOT NULL
+  `hash` text NOT NULL,
+  `role` varchar(255) NOT NULL DEFAULT 'guest'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `pass`, `hash`) VALUES
-(1, 'admin', '$2y$10$wMZdLAFb4Ox4Mm6l6DctjOr.sl6lU.PHmnVUPnHJRGtkoCzLMTgpi', '172686806962096a6ed2dd51.78398545');
+INSERT INTO `users` (`id`, `login`, `pass`, `hash`, `role`) VALUES
+(1, 'admin', '$2y$10$wMZdLAFb4Ox4Mm6l6DctjOr.sl6lU.PHmnVUPnHJRGtkoCzLMTgpi', '894413057620bbb37beb857.80570769', 'admin'),
+(2, 'user', '$2y$10$CqL9GXNgC24m5B3wjhOD4.tzs8FOFNygMg4jMWPQffgyPkZFTs3zW', '', 'guest');
 
 --
 -- Индексы сохранённых таблиц
@@ -213,7 +233,8 @@ ALTER TABLE `products`
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -223,7 +244,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `basket`
 --
 ALTER TABLE `basket`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- AUTO_INCREMENT для таблицы `feedbacks`
@@ -241,7 +262,7 @@ ALTER TABLE `gallery`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
@@ -253,7 +274,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

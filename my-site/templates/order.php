@@ -11,9 +11,10 @@
   <?php else: ?>
   <form action="/order/?messageOrder=preparation" method="post">
     <p>
-      Для оформления заказа необходимо ввести номер телефона, по которому с Вами свяжется наш менеджер.
+      Для оформления заказа введите номер телефона и Ваше имя, по которому с Вами свяжется наш менеджер.
     </p>
-    <input type="tel" name="phone">
+    <input type="text" name="name_user" placeholder="Имя">
+    <input type="text" name="phone" placeholder="Телефон">
     <button class="button" type="submit">Оформить заказ</button>
   </form>
   <?php endif; ?>

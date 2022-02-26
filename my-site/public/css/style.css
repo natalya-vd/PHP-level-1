@@ -122,7 +122,7 @@ textarea:focus {
 }
 
 .catalog-item:hover {
-    transform: translateY(-10px);
+    box-shadow: 0 8px 27px rgb(41 43 51 / 60%);
 }
 
 .catalog-link {
@@ -321,6 +321,44 @@ textarea:focus {
 .color-yellow {
     background-color: #fc0;
 }
+
+/*Админка*/
+.admin-back {
+    color: lightslategrey;
+}
+
+.admin-back:hover {
+    color: #9db7d1;
+}
+
+.admin-item {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 1fr;
+    gap: 20px;
+    margin: 0 0 20px;
+    padding: 0 10px;
+}
+
+.admin-item-green {
+    background-color: rgba(70, 163, 88, 0.1);
+}
+
+.admin-item-gray {
+    background-color: #fbfbfb;
+}
+
+.admin-product {
+    padding: 0 10px;
+    background-color: rgba(70, 163, 88, 0.2);
+}
+
+.admin-info-product {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr;
+    gap: 30px;
+}
+
+
 
 /*Футер*/
 .footer {
